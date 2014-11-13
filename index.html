@@ -1,0 +1,55 @@
+<!doctype html>
+
+<title>Pair Programming Buddy</title>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="styles/docs.css">
+<link rel="stylesheet" href="styles/codemirror.css">
+<script src="scripts/codemirror.js"></script>
+<script src="scripts/pair-programmer.js"></script>
+<script src="scripts/python.js"></script>
+<style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<article>
+<h1>Pair Programming Buddy</h1>
+
+    <div><textarea id="code" name="code">
+# Define a procedure, square, that takes one number
+# as its input, and returns the square of that
+# number (result of multiplying
+# the number by itself).
+
+
+
+# To test your procedure, uncomment the print
+# statement below, by removing the hash mark (#)
+# at the beginning of the line.
+
+# Do not remove the # from in front of the line
+# with the arrows (>>>). Lines which begin like
+# this (#>>>) are included to show the results
+# you should see when run your procedure.
+
+# print square(5)
+# >>> 25</textarea></div>
+
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: {name: "python",
+               version: 3,
+               singleLineStringErrors: false},
+        lineNumbers: true,
+        styleActiveLine: true,
+        indentUnit: 4,
+        matchBrackets: true
+    });
+
+    CodeMirror.fromTextArea(document.getElementById("code-cython"), {
+        mode: {name: "text/x-cython",
+               version: 2,
+               singleLineStringErrors: false},
+        lineNumbers: true,
+        indentUnit: 4,
+        matchBrackets: true
+      });
+    </script>
+  </article>
