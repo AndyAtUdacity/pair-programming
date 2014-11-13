@@ -19,9 +19,14 @@ chrome.extension.sendMessage({}, function(response) {
 			var somethingOtherThanCursorChanged = false;
 
 			mutations.forEach(function(elem) {
-				if (elem.target.className.indexOf("cursor") == -1) {
+				if (elem.target.className.indexOf("cursor") === -1) {
 					somethingOtherThanCursorChanged = true;
 				}
+			});
+
+			if (somethingOtherThanCursorChanged) {
+				console.log(mutations);
+			}
 
 			// do stuff
 			if (!discussionsElemRemoved){
@@ -34,12 +39,16 @@ chrome.extension.sendMessage({}, function(response) {
 			}
 
 			$('.CodeMirror-lines pre').each(function(i, elem){
-				// console.log($(elem).text());
-			});
+				var text = $(elem).text();
+				var textTrim = text.trim();
+				if ($(elem).offset().top === $('.CodeMirror-cursor').offset().top) {
+					console.log( text );
+				}
 
-			if (somethingOtherThanCursorChanged) {
-				console.log(mutations);
-			}
+				if (text.slice(0,3) === 'def' && textTrim.slice(-1) !== ':') {
+					console.log('NOO!!!');
+				}
+			});
 
 			// currentLine = doc.getCursor().line;
 			// prevLine = doc.getLine(currentLine - 1);
