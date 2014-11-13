@@ -11,12 +11,27 @@ chrome.extension.sendMessage({}, function(response) {
 		var containerElem = document.querySelector(".CodeMirror");
 
 		var observer = new MutationObserver (function(mutations) {
-			// do stuff
-			$('.CodeMirror-lines pre').each(function(i, elem){
-				console.log($(elem).text());
+			// $('.CodeMirror-lines pre').each(function(i, elem){
+			// 	console.log($(elem).text());
+			// });
+
+			var somethingOtherThanCursorChanged = false;
+
+			mutations.forEach(function(elem) {
+				if (elem.target.className.indexOf("cursor") == -1) {
+					somethingOtherThanCursorChanged = true;
+				}
 			});
 
-			// console.log('Hi!', mutations);
+			if (somethingOtherThanCursorChanged) {
+				console.log(mutations);
+			}
+
+			// currentLine = doc.getCursor().line;
+			// prevLine = doc.getLine(currentLine - 1);
+			//
+			// console.log(prevLine);
+			// do something with text of prev line
 		})
 		observer.observe(containerElem, {'childList': true, 'attributes': true, 'subtree': true});
 
