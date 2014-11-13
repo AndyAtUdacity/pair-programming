@@ -12,6 +12,22 @@ chrome.extension.sendMessage({}, function(response) {
 		var discussionsElemRemoved = false;
 		var codeTipsDiv;
 		var observer = new MutationObserver (function(mutations) {
+			// $('.CodeMirror-lines pre').each(function(i, elem){
+			// 	console.log($(elem).text());
+			// });
+
+			var somethingOtherThanCursorChanged = false;
+
+			mutations.forEach(function(elem) {
+				if (elem.target.className.indexOf("cursor") === -1) {
+					somethingOtherThanCursorChanged = true;
+				}
+			});
+
+			if (somethingOtherThanCursorChanged) {
+				console.log(mutations);
+			}
+
 			// do stuff
 			if (!discussionsElemRemoved){
 				var headings = $('h3:contains("iscussions")');
@@ -26,10 +42,22 @@ chrome.extension.sendMessage({}, function(response) {
 			}
 
 			$('.CodeMirror-lines pre').each(function(i, elem){
-				// console.log($(elem).text());
+				var text = $(elem).text();
+				var textTrim = text.trim();
+				if ($(elem).offset().top === $('.CodeMirror-cursor').offset().top) {
+					console.log( text );
+				}
+
+				if (text.slice(0,3) === 'def' && textTrim.slice(-1) !== ':') {
+					console.log('NOO!!!');
+				}
 			});
 
-			// console.log('Hi!', mutations);
+			// currentLine = doc.getCursor().line;
+			// prevLine = doc.getLine(currentLine - 1);
+			//
+			// console.log(prevLine);
+			// do something with text of prev line
 		})
 		observer.observe(containerElem, {'childList': true, 'attributes': true, 'subtree': true});
 
