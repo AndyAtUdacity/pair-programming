@@ -153,3 +153,4 @@ var pythonBuiltIns = ['abs', 'all', 'any', 'apply',
   'property', 'quit', 'range', 'raw_input', 'reduce', 'reload', 'repr', 'reversed',
   'round', 'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum',
   'super', 'tuple', 'type', 'unichr', 'unicode', 'vars', 'xrange', 'zip']
+
