@@ -71,7 +71,7 @@ function displaySuggestion(preElement) {
 			'name'    : 'no colon after function definition',
 			'trigger' : lineText.indexOf('def') == 0 && lineText.indexOf(':') != lineText.length-1,
 			'suggestion' : 'If you want to define a function you need to end the line with a colon!',
-			'level'   : 'danger'
+			'level'   : 'danger',
 		},
 		{
 			'name'    : 'tried to use a capitalized Python built-in',
@@ -86,10 +86,28 @@ function displaySuggestion(preElement) {
 			'level'   : 'warning'
 		},
 		{
+			'name'    : 'used a lowercase true',
+			'trigger' : lineText.indexOf('true') != -1,
+			'suggestion' : 'You wrote "true". If you intended to use the Python boolean, make sure you change it to "True".',
+			'level'   : 'warning'
+		},
+		{
+			'name'    : 'used a lowercase false',
+			'trigger' : lineText.indexOf('false') != -1,
+			'suggestion' : 'You wrote "false". If you intended to use the Python boolean, make sure you change it to "False".',
+			'level'   : 'warning'
+		},
+		{
 			'name'    : 'could use a better for loop',
 			'trigger' : lineText.indexOf('for') == 0 && lineText.indexOf('in') != -1 && lineText.indexOf('range') != -1 && lineText.indexOf('len') != -1,
 			'suggestion' : 'Did you know you can iterate directly over the items in a list? Try: <pre>for item in myList:<br>    print item</pre>',
 			'level'   : 'info'
+		},
+		{
+			'name'    : 'no colon after loop ',
+			'trigger' : (lineText.indexOf('while') == 0 || lineText.indexOf('if') == 0) && lineText.indexOf(':') != lineText.length-1,
+			'suggestion' : "Python won't understand your loop unless you end the line with a colon.",
+			'level'   : 'danger'
 		}
 		];
 	var kase, name, trigger, suggestion;
