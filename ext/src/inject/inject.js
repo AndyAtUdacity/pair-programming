@@ -5,7 +5,7 @@ chrome.extension.sendMessage({}, function(response) {
 
 		// ----------------------------------------------------------
 		// This part of the script triggers when page is done loading
-		console.log("Hello. This message was sent from scripts/inject.js");
+		// console.log("Hello. This message was sent from scripts/inject.js");
 		// ----------------------------------------------------------
 
 		var containerElem = document.querySelector(".CodeMirror");
@@ -15,21 +15,15 @@ chrome.extension.sendMessage({}, function(response) {
 		var discussionsHeading = headings[0];
 		var codeTipsDiv = $(discussionsHeading).parent();
 		var observer = new MutationObserver (function(mutations) {
-			// $('.CodeMirror-lines pre').each(function(i, elem){
-			// 	console.log($(elem).text());
-			// });
 
-			// var somethingOtherThanCursorChanged = false;
-			//
-			// mutations.forEach(function(elem) {
-			// 	if (elem.target.className.indexOf("cursor") === -1) {
-			// 		somethingOtherThanCursorChanged = true;
-			// 	}
-			// });
-			//
-			// if (somethingOtherThanCursorChanged) {
-			// 	console.log(mutations);
-			// }
+			/*
+			What we want for errors:
+
+			List of errors ordered by recency
+				- pointer to <pre>
+				- level
+				- message
+			*/
 
 			var analyzeLine = function (preElement) {
 				// do something
@@ -47,7 +41,6 @@ chrome.extension.sendMessage({}, function(response) {
 				}
 
 				if (message) {
-					console.log("adding tip");
 					addTipForLine(preElement, message);
 				}
 			}
@@ -57,7 +50,6 @@ chrome.extension.sendMessage({}, function(response) {
 				// $(codeTipsDiv).append('<div class="alert alert-warning code-tip alert-dismissible" style="font-size:13px"><div class="close-button"><span class="glyphicon glyphicon-remove"></span></div><span class="suggestion">You wrote <code>"5"</code> but may want <code>5</code>. Remove the quotes if you want to use the number 5.</span></div>');
 				// $(codeTipsDiv).append('<div class="alert alert-info code-tip alert-dismissible" style="font-size:13px"><div class="close-button"><span class="glyphicon glyphicon-remove"></span></div><span class="suggestion">If you want to iterate over the items in your list, you can just write <pre>for item in list:<br>  print item</pre></span></div>');
 				codeTipsDiv.append('<div class="alert alert-' + message.level + ' code-tip alert-dismissible" style="font-size:13px"><div class="close-button"><span class="glyphicon glyphicon-remove"></span></div><span class="suggestion">' + message.message + '</span></div>');
-				console.log('was here');
 			}
 
 			// do stuff
@@ -83,7 +75,6 @@ chrome.extension.sendMessage({}, function(response) {
 				// 	console.log('NOO!!!');
 				// }
 
-				console.log("analyzing line");
 				analyzeLine($(elem));
 			});
 
