@@ -24,39 +24,9 @@ chrome.extension.sendMessage({}, function(response) {
 
 		var observer = new MutationObserver (function(mutations) {
 			cursorOffset = $('.CodeMirror-cursor').offset().top;
-			/*
-			What we want for errors:
-
-			List of errors ordered by recency
-				- pointer to <pre>
-				- level
-				- message
-			*/
-
-			var analyzeLine = function (preElement) {
-				// do something
-				var message;
-				var text = preElement.text();
-				var textTrim = text.trim();
-
-				if (text.slice(0,3) === 'def' && textTrim.slice(-1) !== ':') {
-					message = {
-						"level": "danger",
-						"message": "If you want to define a function you need to end the line with a colon."
-					};
-					errorModel.push({
-						pre: preElement,
-						message: message
-					});
-				}
-			}
 
 			var addTipForLine = function (error) {
 				var message = error.message;
-				// $(codeTipsDiv).append('<div class="alert alert-danger code-tip alert-dismissible" style="font-size:13px"><div class="close-button"><span class="glyphicon glyphicon-remove"></span></div><span class="suggestion">If you want to define a function you need to end the line with a colon.</span></div>');
-				// $(codeTipsDiv).append('<div class="alert alert-warning code-tip alert-dismissible" style="font-size:13px"><div class="close-button"><span class="glyphicon glyphicon-remove"></span></div><span class="suggestion">You wrote <code>"5"</code> but may want <code>5</code>. Remove the quotes if you want to use the number 5.</span></div>');
-				// $(codeTipsDiv).append('<div class="alert alert-info code-tip alert-dismissible" style="font-size:13px"><div class="close-button"><span class="glyphicon glyphicon-remove"></span></div><span class="suggestion">If you want to iterate over the items in your list, you can just write <pre>for item in list:<br>  print item</pre></span></div>');
-
 				codeTipsDiv.append('<div class="alert alert-' + message.level + ' code-tip alert-dismissible" style="font-size:13px"><div class="close-button"><span class="glyphicon glyphicon-remove"></span></div><span class="suggestion">' + message.message + '</span></div>');
 			}
 			var colorizePre = function(error) {
@@ -76,12 +46,6 @@ chrome.extension.sendMessage({}, function(response) {
 				codeTipsDiv.append('<h3>Python Tips</h3>');
 				errorModel = []
 				$('.CodeMirror-lines pre').each(function(i, elem){
-					// colorizePre({
-					// 	pre: elem,
-					// 	message: {
-					// 		level: 'none'
-					// 	}
-					// })
 					displaySuggestion($(elem));
 				});
 				var error;
@@ -91,14 +55,6 @@ chrome.extension.sendMessage({}, function(response) {
 					colorizePre(error);
 				}
 			}
-			// this was needed to prevent the pre from becoming uncolorized
-			// when navigating the cursor around a line.
-			// else {
-			// 	for (var i=0; i<errorModel.length; i++){
-			// 		error = errorModel[i];
-			// 		colorizePre(error);
-			// 	}
-			// }
 			oldCursorOffset = cursorOffset;
 		})
 		observer.observe(containerElem, {'childList': true, 'attributes': true, 'subtree': true});
@@ -130,10 +86,10 @@ function displaySuggestion(preElement) {
 			'level'   : 'warning'
 		},
 		{
-			'name'    : '',
-			'trigger' : '',
-			'suggestion' : '',
-			'level'   : 'none'
+			'name'    : 'could use a better for loop',
+			'trigger' : lineText.indexOf('for') == 0 && lineText.indexOf('in') != -1 && lineText.indexOf('range') != -1 && lineText.indexOf('len') != -1,
+			'suggestion' : 'Did you know you can iterate directly over the items in a list? Try: <pre>for item in myList:<br>    print item</pre>',
+			'level'   : 'info'
 		}
 		];
 	var kase, name, trigger, suggestion;
