@@ -18,7 +18,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.udacity.com/*"
+        "https://www.udacity.com/course/viewer*"
       ],
       "js": [
         "js/jquery/jquery.js",
