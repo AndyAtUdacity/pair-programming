@@ -79,13 +79,14 @@ function displaySuggestion(preElement) {
 		{
 			'name'    : 'tried to use a capitalized Python built-in',
 			'trigger' : attemptedToUseBuiltIn(lineText),
-			'suggestion' : "You wrote " + attemptedToUseBuiltIn(lineText) + " but Python doesn't understand. Try rewriting it in lowercase.",
+			//'suggestion' : 'You wrote <div class="code-suggestion CodeMirror cm-s-codacity CodeMirror-code" ><pre class="CodeMirror cm-s-codacity CodeMirror-code code-suggestion">' + lineText + "</pre></div>But Python doesn't understand " + attemptedToUseBuiltIn(lineText) +". Try rewriting it in lowercase.",
+			'suggestion' : 'You wrote:<div class="code-suggestion CodeMirror cm-s-codacity CodeMirror-code" >' + $(preElement).prop('outerHTML') + "</div>But Python doesn't understand " + attemptedToUseBuiltIn(lineText) +". Try rewriting it in lowercase.",
 			'level'   : 'danger'
 		},
 		{
 			'name'    : 'tried to use a string for a number',
 			'trigger' : triedToUseStringForNumber(lineText),
-			'suggestion' : 'You wrote ' + triedToUseStringForNumber(lineText) + ' in the previous line. The quotation marks are interpreted as a string by Python. If you want a number you need to get rid of the quotes!',
+			'suggestion' : 'You wrote:<div class="code-suggestion CodeMirror cm-s-codacity CodeMirror-code" >' + $(preElement).prop('outerHTML') + '</div>The quotation marks are interpreted as a string by Python. If you want a number you need to get rid of the quotes!',
 			'level'   : 'warning'
 		},
 		{
@@ -103,7 +104,7 @@ function displaySuggestion(preElement) {
 		{
 			'name'    : 'could use a better for loop',
 			'trigger' : lineText.indexOf('for') == 0 && lineText.indexOf('in') != -1 && lineText.indexOf('range') != -1 && lineText.indexOf('len') != -1,
-			'suggestion' : 'Did you know you can iterate directly over the items in a list? Try: <pre>for item in myList:<br>    print item</pre>',
+			'suggestion' : 'Did you know you can iterate directly over the items in a list? Try: <div class="code-suggestion CodeMirror cm-s-codacity CodeMirror-code" ><pre class="CodeMirror cm-s-codacity CodeMirror-code code-suggestion"><span class="cm-keyword">for</span> '+getSingularOfStuffInLen(lineText)+' in '+getStuffInLen(lineText)+':<br>    print '+getSingularOfStuffInLen(lineText)+'</pre></div>Learn more in the <a href="https://docs.python.org/2/tutorial/controlflow.html#for-statements" target="_blank">Python For Loop Documentation</a>.',
 			'level'   : 'info'
 		},
 		{
@@ -139,6 +140,25 @@ function displaySuggestion(preElement) {
 	}
 };
 
+function getSingularOfStuffInLen(lineText){
+	var stuffInLen = getStuffInLen(lineText);
+	if (stuffInLen.slice(-3) == 'ies'){
+		return stuffInLen.slice(0,-3)+'y';
+	}
+	if (stuffInLen.slice(-1) == 's'){
+		return stuffInLen.slice(0,-1);
+	}
+	else {
+		return 'item';
+	}
+}
+
+function getStuffInLen(lineText){
+	var index = lineText.indexOf('len(');
+	var second_index = lineText.indexOf(')', index);
+	return lineText.slice(index+4,second_index);
+}
+
 function attemptedToUseBuiltIn(lineText){
 	var words = lineText.split(/[ ]+/);
 	var word;
@@ -148,7 +168,7 @@ function attemptedToUseBuiltIn(lineText){
 		if (word.length >= 3 && word.toLowerCase() != word) {
 			wordIndex = pythonBuiltIns.indexOf(word.toLowerCase());
 			if (wordIndex > -1){
-				return word;
+				return '<span class="CodeMirror cm-s-codacity CodeMirror-code" style="padding:2px">'+word+'</span>';
 			}
 		}
 	}
