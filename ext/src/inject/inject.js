@@ -27,7 +27,7 @@ chrome.extension.sendMessage({}, function(response) {
 
 			var addTipForLine = function (error) {
 				var message = error.message;
-				codeTipsDiv.append('<div class="alert alert-' + message.level + ' code-tip alert-dismissible" style="font-size:13px"><div class="close-button"><span class="glyphicon glyphicon-remove"></span></div><span class="suggestion">' + message.message + '</span></div>');
+				codeTipsDiv.append('<div class="alert alert-' + message.level + ' code-tip alert-dismissible" style="font-size:13px"><span class="suggestion">' + message.message + '</span></div>');
 			}
 			var colorizePre = function(error) {
 				var pre = error.pre;
@@ -104,11 +104,17 @@ function displaySuggestion(preElement) {
 			'level'   : 'info'
 		},
 		{
-			'name'    : 'no colon after loop ',
+			'name'    : 'no colon after loop',
 			'trigger' : (lineText.indexOf('while') == 0 || lineText.indexOf('if') == 0) && lineText.indexOf(':') != lineText.length-1,
 			'suggestion' : "Python won't understand your loop unless you end the line with a colon.",
 			'level'   : 'danger'
 		}
+		// {
+		// 	'name'    : 'bad function parameters',
+		// 	'trigger' : functionHasBadParameters(lineText),
+		// 	'suggestion' : "The parameters of your function can't include "+functionHasBadParameters(lineText)+'.',
+		// 	'level'   : 'danger'
+		// }
 		];
 	var kase, name, trigger, suggestion;
 	for (var i=0; i<cases.length; i++){
@@ -162,6 +168,28 @@ function triedToUseStringForNumber(lineText){
 	}
 	return false
 }
+
+// function functionHasBadParameters(lineText){
+// 	var myRe = new RegExp('/\(.*\)/');
+// 	var params = lineText.match(myRe);
+// 	if (!params){
+// 		return false;
+// 	}
+// 	params = params[0];
+// 	var badChars = ['@','#','$','%','^','&', ' * ', '==']
+// 	if (lineText.indexOf('def') == 0 && lineText.indexOf(':') == lineText.length-1){
+// 		var badCharsUsed = '';
+// 		for (var i=0; i < badChars.length; i++){
+// 			if (params.indexOf(badChars[i] != -1)) {
+// 				badCharsUsed += badChars[i]+' ';
+// 			}
+// 		}
+// 		return badCharsUsed;
+// 	}
+// 	else{
+// 		return false;
+// 	}
+// }
 
 var pythonBuiltIns = ['abs', 'all', 'any', 'apply',
   'basestring', 'bin', 'bool', 'buffer', 'bytearray', 'bytes', 'callable',
