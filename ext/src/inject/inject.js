@@ -21,7 +21,10 @@ chrome.extension.sendMessage({}, function(response) {
 		codeTipsDiv.append('<h3>Python Tips</h3>');
 		var cursorOffset;
 		var oldCursorOffset;
-
+		$('a:contains("Report an issue")').remove();
+		$('#staff-issues').remove();
+		$('a:contains("Edit")').remove();
+		$('a:contains("Manage")').remove();
 		var observer = new MutationObserver (function(mutations) {
 			cursorOffset = $('.CodeMirror-cursor').offset().top;
 
