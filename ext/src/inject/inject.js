@@ -71,7 +71,7 @@ function displaySuggestion(preElement) {
 			'name'    : 'no colon after function definition',
 			'trigger' : lineText.indexOf('def') == 0 && lineText.indexOf(':') != lineText.length-1,
 			'suggestion' : 'If you want to define a function you need to end the line with a colon!',
-			'level'   : 'danger',
+			'level'   : 'danger'
 		},
 		{
 			'name'    : 'tried to use a capitalized Python built-in',
